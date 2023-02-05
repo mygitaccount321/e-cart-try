@@ -11,11 +11,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecarttry.ecommers.dao.CountryRepository;
 import com.ecarttry.ecommers.dao.ProductCategoryRepository;
 import com.ecarttry.ecommers.dao.ProductRepository;
+import com.ecarttry.ecommers.dao.StateRepository;
+import com.ecarttry.ecommers.dtos.CountryDto;
 import com.ecarttry.ecommers.dtos.ProductCategoryDto;
 import com.ecarttry.ecommers.dtos.ProductDto;
 import com.ecarttry.ecommers.dtos.ProductPageDto;
+import com.ecarttry.ecommers.dtos.StateDto;
 import com.ecarttry.ecommers.mapper.ProductDtoMapper;
 
 @RestController
@@ -26,6 +30,12 @@ public class EcartController {
 
 	@Autowired
 	private ProductCategoryRepository productCategoryRepository;
+
+	@Autowired
+	private CountryRepository countryRepository;
+
+	@Autowired
+	private StateRepository stateRepository;
 
 	@Autowired
 	private ProductDtoMapper productDtoMapper;
@@ -73,4 +83,15 @@ public class EcartController {
 		Pageable pageble= PageRequest.of(page,size);
 		return productDtoMapper.toPageProductDto(productRepository.findByNameContaining(name, pageble));
 	}
+	
+	@GetMapping("/api/countries")
+	public List<CountryDto> getCountries() {
+		return productDtoMapper.toCountryDto(countryRepository.findAll());
+	}
+	
+	@GetMapping("/api/states/search/findByCountryCode")
+	public List<StateDto> getFindByCountryCode(@Param("code") String code) {
+		return productDtoMapper.toStateDto(stateRepository.findByCountryCode(code));
+	}
+
 }

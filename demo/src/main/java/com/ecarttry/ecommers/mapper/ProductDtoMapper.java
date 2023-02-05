@@ -6,12 +6,16 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.ecarttry.ecommers.dtos.CountryDto;
 import com.ecarttry.ecommers.dtos.MyPageDto;
 import com.ecarttry.ecommers.dtos.ProductCategoryDto;
 import com.ecarttry.ecommers.dtos.ProductDto;
 import com.ecarttry.ecommers.dtos.ProductPageDto;
+import com.ecarttry.ecommers.dtos.StateDto;
+import com.ecarttry.ecommers.entity.Country;
 import com.ecarttry.ecommers.entity.Product;
 import com.ecarttry.ecommers.entity.ProductCategory;
+import com.ecarttry.ecommers.entity.State;
 
 @Component
 public class ProductDtoMapper {
@@ -95,5 +99,24 @@ public class ProductDtoMapper {
 		 productCategoryDto.setId(product.getCategory().getId());
 		 productDto.setCategoryDto(productCategoryDto);
 		 return productDto;
+	}
+	
+	public List<CountryDto> toCountryDto(List<Country> countrys) {
+		return countrys.stream().map((country) -> {
+			CountryDto countryDto = new CountryDto();
+			countryDto.setCode(country.getCode());
+			countryDto.setId(country.getId());
+			countryDto.setName(country.getName());
+			 return countryDto;
+		}).collect(Collectors.toList());
+	}
+	
+	public List<StateDto> toStateDto(List<State> states) {
+		return states.stream().map((state) -> {
+			StateDto stateDto = new StateDto();
+			stateDto.setId(state.getId());
+			stateDto.setName(state.getName());
+			 return stateDto;
+		}).collect(Collectors.toList());
 	}
 }
